@@ -84,6 +84,10 @@ def get_data_plot_normalized_values(final_attribute_data):
 
 if __name__ == "__main__":
     graph_list = []
+    # print(len(sys.argv))
+    if len(sys.argv) < 3:
+        print('Usage python3 main.py base_comparator_csv_file compare_csv_file1...compare_csv_fileN')
+        exit(1)
     for i, arg in enumerate(sys.argv):
         if i > 0:
             attrib = get_data_from_file(sys.argv[i])
