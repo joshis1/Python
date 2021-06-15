@@ -58,15 +58,18 @@ def get_labels(versions_data):
 def get_attribute_keys_list(versions_data):
     test_name_keys = versions_data[0].keys()
     # print(test_name_keys)
-    return list(test_name_keys)[1:]
+    return list(test_name_keys)
 
 
 def get_attributes_values_list(versions_data_list):
     final_data = []
     for version_data in versions_data_list:
+        #print(version_data)
+        del version_data['fw_version']
         # Don't consider the fw version as attribute so slice with 1:
-        test_list = list(version_data.values())[1:]
+        test_list = list(version_data.values())
         # Unfortunately, all the fields are string so convert each of string to float.
+        #print(test_list)
         test_list = list(map(float, test_list))
         # Get a list of attribute values list.
         final_data.append(test_list)
@@ -92,12 +95,13 @@ if __name__ == "__main__":
         if i > 0:
             attrib = get_data_from_file(sys.argv[i])
             graph_list.append(attrib)
-    get_labels(graph_list)
+    labels = get_labels(graph_list)
+    #print(labels)
     attrib_values = get_attributes_values_list(graph_list)
-    # print(attrib_values)
+    #print(attrib_values)
     result_data = get_data_plot_normalized_values(attrib_values)
     attrib_keys = get_attribute_keys_list(graph_list)
-    # print(attrib_keys)
-    labels = get_labels(graph_list)
+    #print(attrib_keys)
+    #labels = get_labels(graph_list)
     plot_normalized_bar_graph(labels, result_data, attrib_keys)
 
