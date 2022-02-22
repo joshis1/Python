@@ -1,0 +1,48 @@
+version: '3.5'
+
+services:
+ mqtt:
+      image: toke/mosquitto
+      container_name: mqtt
+      expose:
+        - 1883
+      ports:
+        - 1883:1883
+      restart: unless-stopped
+
+      networks:
+        - my_network
+
+ fast:
+     container_name: fast
+     expose:
+        - 8000
+     networks:
+       - my_network
+    
+     ports:
+        - 8000:8000
+     restart: unless-stopped
+     build:
+      context: .
+      dockerfile: Dockerfile
+
+     depends_on:
+        - mqtt
+
+
+ nmt:
+     container_name: nmt
+     networks:
+       - my_network
+     restart: unless-stopped
+     build:
+      context: .
+      dockerfile: DockerNmap
+
+     depends_on:
+        - mqtt
+
+networks:
+  my_network:
+    driver: bridge
